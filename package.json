@@ -3,7 +3,9 @@
   "version": "19.3.0",
   "description": "React-food-app",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "parcel index.html --port 3000",
+    "build": "parcel build index.html"
   },
   "repository": {
     "type": "git",
