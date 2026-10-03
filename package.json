@@ -1,0 +1,24 @@
+{
+  "name": "react-food-app",
+  "version": "19.3.0",
+  "description": "React-food-app",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BasavarajHirur/React-App.git"
+  },
+  "author": "Basavaraja Hiruru",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BasavarajHirur/React-App/issues"
+  },
+  "homepage": "https://github.com/BasavarajHirur/React-App#readme",
+  "devDependencies": {
+    "parcel": "^2.16.4"
+  },
+  "dependencies": {
+    "react": "^19.3.0"
+  }
+}
