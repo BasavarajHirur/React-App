@@ -1,5 +1,5 @@
-## Steps set up from basic
+## Steps set up from basic Manually
 1. npm init (Initialize the npm)
 2. npm i -D parcel (installing parcel bundler for development and buidling)
 3. npm i react
-4. npm i react-dom
+git 4. npm i react-dom

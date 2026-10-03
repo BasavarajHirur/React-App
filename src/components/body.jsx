@@ -1,5 +1,5 @@
-import RestaurantCard from "./restaurantCard";
 import { useState, useEffect } from "react";
+import RestaurantCard from "./restaurantCard";
 
 function Body() {
 
@@ -7,6 +7,10 @@ function Body() {
     const [filteredRestaurants, setFilteredRestaurants] = useState([]);
     const [searchText, setSearchText] = useState("");
 
+
+    //If no dependency array is provided, the useEffect will run after every render of the component. 
+    // If an empty dependency array is provided, the useEffect will run only once after the initial render of the component. 
+    // If a dependency array with variables is provided, the useEffect will run after the initial render and whenever any of the variables in the dependency array change.
     useEffect(() => {
         fetchRestaurants();
     }, []);
