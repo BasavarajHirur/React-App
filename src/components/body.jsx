@@ -1,47 +1,72 @@
 import RestaurantCard from "./restaurantCard";
+import { useState, useEffect } from "react";
 
 function Body() {
-  const restaurants = [
-    {
-      id: 1,
-      name: "Empire Restaurant",
-      cuisine: "Biryani, North Indian",
-      rating: 4.3,
-      deliveryTime: "30 mins",
-      image: "https://via.placeholder.com/250x150"
-    },
-    {
-      id: 2,
-      name: "Udupi Garden",
-      cuisine: "South Indian, Dosa",
-      rating: 4.5,
-      deliveryTime: "25 mins",
-      image: "https://via.placeholder.com/250x150"
-    },
-    {
-      id: 3,
-      name: "Pizza Corner",
-      cuisine: "Pizza, Italian",
-      rating: 4.1,
-      deliveryTime: "35 mins",
-      image: "https://via.placeholder.com/250x150"
+
+    const [restaurants, setRestaurants] = useState([]);
+    const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+    const [searchText, setSearchText] = useState("");
+
+    useEffect(() => {
+        fetchRestaurants();
+    }, []);
+
+    const fetchRestaurants = async () => {
+        try {
+            const res = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING");
+            const data = await res.json();
+            setRestaurants(data?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+            setFilteredRestaurants(data?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+        } catch (error) {
+            console.error("Error fetching restaurants:", error);
+        }
     }
-  ];
 
-  return (
-    <main className="body">
-      <h2>Restaurants Near You</h2>
+    const getFilterRestaurants = () => {
+        console.log(searchText);
+        const filtered = restaurants.filter((restaurant) =>
+            restaurant.info.name.toLowerCase().includes(searchText.toLowerCase())
+        );
+        setFilteredRestaurants(filtered);
+    }
 
-      <div className="restaurant-list">
-        {restaurants.map((restaurant) => (
-          <RestaurantCard
-            key={restaurant.id}
-            restaurant={restaurant}
-          />
-        ))}
-      </div>
-    </main>
-  );
+    const topRestaurants = () => {
+        const filtered = restaurants.filter((restaurant) => restaurant.info.avgRating > 4.5);
+        setFilteredRestaurants(filtered);
+    }
+
+    return restaurants.length === 0 && filteredRestaurants === 0 ?
+        <h1>Loading...</h1>
+        :
+        (<main className="body">
+            <div className="search-container">
+                <div className="search">
+                    <input
+                        type="text"
+                        placeholder="Search products..."
+                        value={searchText}
+                        onChange={(e) => {
+                            console.log(e.target.value);
+                            setSearchText(e.target.value);
+                        }}
+                    />
+                    <button onClick={getFilterRestaurants}>Search</button>
+                </div>
+                <div className="top-rated-btn">
+                    <button onClick={topRestaurants}>Top Rated</button>
+                </div>
+            </div>
+            <h2>Restaurants Near You</h2>
+
+            <div className="restaurant-list">
+                {filteredRestaurants.map((filteredRestaurant) => (
+                    <RestaurantCard
+                        key={filteredRestaurant.info.id}
+                        restaurant={filteredRestaurant.info}
+                    />
+                ))}
+            </div>
+        </main>)
 }
 
 export default Body;
