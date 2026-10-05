@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import RestaurantCard from "./restaurantCard";
+import { RESTAURANT_API } from "../utils/constant";
+import { Link } from "react-router-dom";
 
 function Body() {
 
@@ -7,18 +9,23 @@ function Body() {
     const [filteredRestaurants, setFilteredRestaurants] = useState([]);
     const [searchText, setSearchText] = useState("");
 
+    console.warn('parent render')
+
 
     //If no dependency array is provided, the useEffect will run after every render of the component. 
     // If an empty dependency array is provided, the useEffect will run only once after the initial render of the component. 
     // If a dependency array with variables is provided, the useEffect will run after the initial render and whenever any of the variables in the dependency array change.
     useEffect(() => {
+        console.log('parent useEffect');
         fetchRestaurants();
     }, []);
 
     const fetchRestaurants = async () => {
         try {
-            const res = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING");
+            const res = await fetch(RESTAURANT_API);
             const data = await res.json();
+            console.log(data);
+            console.log(data?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
             setRestaurants(data?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
             setFilteredRestaurants(data?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
         } catch (error) {
@@ -39,7 +46,7 @@ function Body() {
         setFilteredRestaurants(filtered);
     }
 
-    return restaurants.length === 0 && filteredRestaurants === 0 ?
+    return restaurants.length === 0 && filteredRestaurants.length === 0 ?
         <h1>Loading...</h1>
         :
         (<main className="body">
@@ -64,10 +71,9 @@ function Body() {
 
             <div className="restaurant-list">
                 {filteredRestaurants.map((filteredRestaurant) => (
-                    <RestaurantCard
-                        key={filteredRestaurant.info.id}
-                        restaurant={filteredRestaurant.info}
-                    />
+                    <Link to={`/restaurant/${filteredRestaurant.info.id}`} key={filteredRestaurant.info.id}>
+                        <RestaurantCard restaurant={filteredRestaurant.info} />
+                    </Link>
                 ))}
             </div>
         </main>)

@@ -3,6 +3,11 @@ import { CLOUDINARY_URL } from "../utils/constant";
 
 function RestaurantCard({ restaurant }) {
     const { name, cuisine, avgRating, sla, cloudinaryImageId } = restaurant;
+    useEffect(() => {
+        console.log('child useEffect');
+    }, []);
+    
+    console.log('child render');
     return (
         <div className="restaurant-card">
             <img

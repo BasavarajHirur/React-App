@@ -21,6 +21,9 @@
     "parcel": "^2.16.4"
   },
   "dependencies": {
-    "react": "^19.3.0"
+    "@tailwindcss/postcss": "^4.3.3",
+    "react": "^19.3.0",
+    "react-router-dom": "^6.11.2",
+    "tailwindcss": "^4.3.3"
   }
 }
